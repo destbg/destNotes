@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="destNotes.View.Settings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="300">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Rectangle Fill="{DynamicResource BackgroundColor}" MouseLeftButtonDown="MoveWindow"/>
+            <DockPanel>
+                <Button DockPanel.Dock="Left" Name="ShowNoteList">
+                    <Image Source="../Assets/arrow-left.png"/>
+                </Button>
+                <TextBlock FontSize="18" Opacity="0.7" Text="Settings"/>
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Click="CloseApplication">
+                    <Image Source="../Assets/window-close.png"/>
+                </Button>
+            </DockPanel>
+        </Grid>
+        <StackPanel>
+
+        </StackPanel>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="destNotes.View.NoteList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:destNotes"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="300">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Rectangle Fill="{DynamicResource BackgroundColor}" MouseLeftButtonDown="MoveWindow"/>
+            <DockPanel>
+                <Button DockPanel.Dock="Left" Name="AddNote">
+                    <Image Source="../Assets/plus.png"/>
+                </Button>
+                <Button DockPanel.Dock="Right" Click="CloseApplication">
+                    <Image Source="../Assets/window-close.png"/>
+                </Button>
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Name="ShowSettings">
+                    <Image Source="../Assets/settings-outline.png"/>
+                </Button>
+            </DockPanel>
+        </Grid>
+        <ListBox DockPanel.Dock="Bottom" ItemsSource="{Binding Notes}" Name="NoteListBox">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Background="#0f0f0f">
+                        <Rectangle Fill="{Binding Color}" Height="5" />
+                        <TextBlock Foreground="{Binding Color}" Margin="0 0 5 0" 
+                                   Text="{Binding Edited}" HorizontalAlignment="Right"/>
+                        <RichTextBox Name="MultiText" SpellCheck.IsEnabled="True" Width="275"
+                                     VerticalAlignment="Stretch" MaxHeight="100"
+                                     HorizontalAlignment="Stretch" AcceptsReturn="True"
+                                     VerticalScrollBarVisibility="Hidden" HorizontalContentAlignment="Left"
+                                     FontSize="14" IsReadOnly="True" Margin="5"
+                                     local:RichTextBoxHelper.DocumentXaml="{Binding Id}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</UserControl>
