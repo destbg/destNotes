@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using destNotes.Model;
+﻿using destNotes.Model;
 using destNotes.ViewModel.Annotations;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace destNotes.ViewModel
 {
@@ -9,8 +9,7 @@ namespace destNotes.ViewModel
     {
         private Note _note;
 
-        public Note Note
-        {
+        public Note Note {
             get => _note;
             set
             {
@@ -33,6 +32,12 @@ namespace destNotes.ViewModel
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public async void SaveNote()
+        {
+            await _controller.SaveNote(Note);
+            OnPropertyChanged(nameof(Note));
         }
     }
 }

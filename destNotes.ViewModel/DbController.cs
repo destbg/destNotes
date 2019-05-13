@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using destNotes.Data;
+using destNotes.Model;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using destNotes.Data;
-using destNotes.Model;
 
 namespace destNotes.ViewModel
 {

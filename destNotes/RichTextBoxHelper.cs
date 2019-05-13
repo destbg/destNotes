@@ -11,6 +11,7 @@ namespace destNotes
         {
             obj.SetValue(DocumentXamlProperty, value);
         }
+
         public static readonly DependencyProperty DocumentXamlProperty =
             DependencyProperty.RegisterAttached(
                 "DocumentXaml",

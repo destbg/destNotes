@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Dapper;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
 
 namespace destNotes.Data
 {
@@ -23,20 +23,22 @@ namespace destNotes.Data
 
         public async Task<T> LoadData<T>(string name, string id)
         {
-            return (await _connection.QueryAsync<T>($"select * from {name} where Id = @id", 
-                new {id})).FirstOrDefault();
+            return (await _connection.QueryAsync<T>($"select * from {name} where Id = @id",
+                new { id })).FirstOrDefault();
         }
 
         public async Task AddData<T>(string name, T obj)
         {
             var fields = obj.GetType().GetProperties().Select(s => s.Name);
-            await _connection.ExecuteAsync($"insert into {name} ({string.Join(", ", fields)}) values (@{string.Join(", @", fields)})", obj);
+            var sql = $"insert into {name} ({string.Join(", ", fields)}) values (@{string.Join(", @", fields)})";
+            await _connection.ExecuteAsync(sql, obj);
         }
 
         public async Task OverrideData<T>(string name, T obj, string id)
         {
             var fields = obj.GetType().GetProperties().Select(s => $"{s.Name} = @{s.Name}");
-            await _connection.ExecuteAsync($"update {name} set {string.Join(", ", fields)} where Id = {id}", obj);
+            var sql = $"update {name} set {string.Join(", ", fields)} where Id = '{id}'";
+            await _connection.ExecuteAsync(sql, obj);
         }
 
         public async Task TruncateData(string name)

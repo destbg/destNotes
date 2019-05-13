@@ -19,7 +19,6 @@
             </DockPanel>
         </Grid>
         <StackPanel>
-
         </StackPanel>
     </DockPanel>
 </UserControl>

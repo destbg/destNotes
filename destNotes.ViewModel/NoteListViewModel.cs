@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using destNotes.Model;
+﻿using destNotes.Model;
+using System.Collections.ObjectModel;
 
 namespace destNotes.ViewModel
 {

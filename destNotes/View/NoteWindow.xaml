@@ -3,45 +3,76 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Background="{DynamicResource BackgroundColor}" LostKeyboardFocus="WindowLostFocus"
-        Title="Note" Height="400" Width="500" GotKeyboardFocus="WindowGotFocus">
-    <DockPanel>
-        <Grid DockPanel.Dock="Top" Height="40">
-            <DockPanel Background="{Binding Note.Color}" Name="HeaderPanel" 
-                       MouseLeftButtonDown="MoveWindow">
-                <Button DockPanel.Dock="Left" Name="AddNote">
-                    <Image Source="../Assets/plus.png"/>
-                </Button>
-                <Button DockPanel.Dock="Right" Click="CloseNote">
-                    <Image Source="../Assets/window-close.png"/>
-                </Button>
-                <Button DockPanel.Dock="Right" HorizontalAlignment="Right">
-                    <Image Source="../Assets/dots-horizontal.png"/>
-                </Button>
+        xmlns:local="clr-namespace:destNotes.View"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d" WindowStyle="None" WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundColor}" Loaded="LoopSave"
+        LostKeyboardFocus="WindowLostFocus" SizeChanged="NoteWindowSizeChanged"
+        Title="Note" MinHeight="400" MinWidth="500" Height="400" Width="500" GotKeyboardFocus="WindowGotFocus">
+    <Window.Resources>
+        <!--Resize-->
+        <Style TargetType="{x:Type local:NoteWindow}">
+            <Setter Property="shell:WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <shell:WindowChrome CaptionHeight="5"
+                                    CornerRadius="1"
+                                    GlassFrameThickness="1"
+                                    NonClientFrameEdges="None"
+                                    ResizeBorderThickness="2"
+                                    UseAeroCaptionButtons="False"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid Name="OptionsGrid" ZIndex="10" Visibility="Hidden">
+            <DockPanel ZIndex="1">
+                <xctk:ColorCanvas Background="{DynamicResource BackgroundColor}"
+                    Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Left"
+                    UsingAlphaChannel="False" DockPanel.Dock="Left" VerticalAlignment="Top"
+                    Name="ColorCanvas" SelectedColor="{Binding Note.Color}"/>
             </DockPanel>
+            <Rectangle Fill="Black" Opacity=".5"
+                DockPanel.Dock="Bottom" MouseLeftButtonDown="HideSettings"/>
         </Grid>
-        <RichTextBox Name="MultiText" SpellCheck.IsEnabled="True"
+        <DockPanel>
+            <Grid DockPanel.Dock="Top" Height="40">
+                <DockPanel Background="{Binding Note.Color}" Name="HeaderPanel"
+                       MouseLeftButtonDown="MoveWindow">
+                    <Button DockPanel.Dock="Left" Name="AddNote">
+                        <Image Source="../Assets/plus.png" Name="AddNoteImage"/>
+                    </Button>
+                    <Button DockPanel.Dock="Right" Click="CloseNote">
+                        <Image Source="../Assets/window-close.png" Name="CloseImage"/>
+                    </Button>
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Click="ShowOptions">
+                        <Image Source="../Assets/dots-horizontal.png" Name="OptionsImage"/>
+                    </Button>
+                </DockPanel>
+            </Grid>
+            <RichTextBox Name="MultiText" SpellCheck.IsEnabled="True"
                 DockPanel.Dock="Top" VerticalAlignment="Stretch"
                 HorizontalAlignment="Stretch" AcceptsReturn="True"
                 VerticalScrollBarVisibility="Auto" Padding="5"
-                FontSize="14" Height="310" PreviewKeyDown="MultiTextKeyDown" />
-        <StackPanel Name="FooterPanel" Orientation="Horizontal" DockPanel.Dock="Bottom">
-            <ToggleButton Click="ChangeText" Tag="Bold" Name="BoldToggle">
-                <Image Source="../Assets/format-bold.png"/>
-            </ToggleButton>
-            <ToggleButton Click="ChangeText" Name="ItalicToggle">
-                <Image Source="../Assets/format-italic.png"/>
-            </ToggleButton>
-            <ToggleButton Click="ChangeText" Name="UnderlineToggle">
-                <Image Source="../Assets/format-underline.png"/>
-            </ToggleButton>
-            <ToggleButton Click="ChangeText" Name="StrikeToggle">
-                <Image Source="../Assets/format-strikethrough.png"/>
-            </ToggleButton>
-            <ToggleButton Click="ChangeText" Name="BulletsToggle">
-                <Image Source="../Assets/format-list-bulleted.png"/>
-            </ToggleButton>
-        </StackPanel>
-    </DockPanel>
+                FontSize="14" Height="310" PreviewKeyDown="MultiTextKeyDown"/>
+            <StackPanel Name="FooterPanel" Orientation="Horizontal" DockPanel.Dock="Bottom">
+                <ToggleButton Click="ChangeText" Tag="Bold" Name="BoldToggle">
+                    <Image Source="../Assets/format-bold.png"/>
+                </ToggleButton>
+                <ToggleButton Click="ChangeText" Name="ItalicToggle">
+                    <Image Source="../Assets/format-italic.png"/>
+                </ToggleButton>
+                <ToggleButton Click="ChangeText" Name="UnderlineToggle">
+                    <Image Source="../Assets/format-underline.png"/>
+                </ToggleButton>
+                <ToggleButton Click="ChangeText" Name="StrikeToggle">
+                    <Image Source="../Assets/format-strikethrough.png"/>
+                </ToggleButton>
+                <ToggleButton Click="ChangeText" Name="BulletsToggle">
+                    <Image Source="../Assets/format-list-bulleted.png"/>
+                </ToggleButton>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
 </Window>

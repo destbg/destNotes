@@ -25,8 +25,8 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Background="#0f0f0f">
-                        <Rectangle Fill="{Binding Color}" Height="5" />
-                        <TextBlock Foreground="{Binding Color}" Margin="0 0 5 0" 
+                        <Rectangle Fill="{Binding Color}" Height="5"/>
+                        <TextBlock Foreground="{Binding Color}" Margin="0 0 5 0"
                                    Text="{Binding Edited}" HorizontalAlignment="Right"/>
                         <RichTextBox Name="MultiText" SpellCheck.IsEnabled="True" Width="275"
                                      VerticalAlignment="Stretch" MaxHeight="100"

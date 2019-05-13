@@ -6,5 +6,5 @@
         mc:Ignorable="d" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         Background="{DynamicResource BackgroundColor}" Foreground="{DynamicResource ForegroundColor}"
         Title="MainWindow" Height="600" Width="300">
-    <ContentControl Name="ControlPrincipal" />
+    <ContentControl Name="ControlPrincipal"/>
 </Window>

@@ -1,12 +1,11 @@
-﻿using System;
+﻿using destNotes.Model;
 using destNotes.View;
-using System.IO;
+using destNotes.ViewModel;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using destNotes.Model;
-using destNotes.ViewModel;
 using NotifyIcon = System.Windows.Forms.NotifyIcon;
 
 namespace destNotes
@@ -74,6 +73,7 @@ namespace destNotes
             noteList.ShowSettings.Click += ShowSettings;
             ControlPrincipal.Content = noteList;
         }
+
         private void ShowNote(object sender, MouseButtonEventArgs e)
         {
             if (!((sender as ListBox)?.SelectedItem is Note noteModel)) return;
