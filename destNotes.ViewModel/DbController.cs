@@ -62,6 +62,11 @@ namespace destNotes.ViewModel
                 }, note.Id);
         }
 
+        public async Task DeleteNote(string id)
+        {
+            await _manager.DeleteData("Notes", id);
+        }
+
         public async Task<Setting> LoadSetting()
         {
             return (await _manager.LoadData<Setting>("Settings")).FirstOrDefault();

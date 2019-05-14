@@ -148,6 +148,8 @@
     <Resource Include="Assets\dots-horizontal-dark.png" />
     <Resource Include="Assets\plus-dark.png" />
     <Resource Include="Assets\window-close-dark.png" />
+    <Resource Include="Assets\view-list.png" />
+    <Resource Include="Assets\trash-can-outline.png" />
     <Content Include="DbContext.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

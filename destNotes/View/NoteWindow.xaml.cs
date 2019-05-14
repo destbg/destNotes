@@ -1,6 +1,5 @@
 ﻿using destNotes.ViewModel;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -8,46 +7,28 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using destNotes.ViewModel.Input;
 
 namespace destNotes.View
 {
     public partial class NoteWindow : Window
     {
-        private bool _isBold;
-        private bool _isItalic;
-        private bool _isUnderline;
-        private bool _isStrike;
-        private bool _isBullets;
         private readonly NoteViewModel _noteViewModel;
-        private readonly string _id;
-        private bool _canSave;
+        private readonly NoteController _note;
         private bool _isFocused;
 
         public NoteWindow(DbController controller, string id)
         {
             InitializeComponent();
+            _note = new NoteController(id, MultiText);
             _noteViewModel = new NoteViewModel(controller, id);
             DataContext = _noteViewModel;
-            _id = id;
 
-            var color = _noteViewModel.Note.Color.Color;
-            var luminance = 0.2126 * color.R + 0.7152 * color.G + 0.0722 * color.B;
-            if (luminance > 127.5)
-            {
-                AddNoteImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/plus-dark.png", UriKind.Relative));
-                CloseImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/window-close-dark.png", UriKind.Relative));
-                OptionsImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/dots-horizontal-dark.png", UriKind.Relative));
-            }
-            else
-            {
-                AddNoteImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/plus.png", UriKind.Relative));
-                CloseImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/window-close.png", UriKind.Relative));
-                OptionsImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/dots-horizontal.png", UriKind.Relative));
-            }
+            SetLuminance(_noteViewModel.Note.Color.Color);
 
             MultiText.SetValue(Block.LineHeightProperty, 0.1);
             MultiText.Document.Blocks.Clear();
-            LoadRichTextBox();
+            _note.LoadRichTextBox();
 
             this.ShowInTaskbar = false;
         }
@@ -63,86 +44,27 @@ namespace destNotes.View
             if (button?.IsChecked == null) return;
             var check = button.IsChecked.Value;
 
-            switch (button.Name)
-            {
-                case "BoldToggle":
-                    _isBold = check;
-                    break;
+            _note.ChangeTextSettings(button.Name, StrikeToggle, UnderlineToggle, check);
 
-                case "ItalicToggle":
-                    _isItalic = check;
-                    break;
-
-                case "UnderlineToggle":
-                    _isUnderline = check;
-                    if (check)
-                    {
-                        _isStrike = false;
-                        StrikeToggle.IsChecked = false;
-                    }
-                    break;
-
-                case "StrikeToggle":
-                    _isStrike = check;
-                    if (check)
-                    {
-                        _isUnderline = false;
-                        UnderlineToggle.IsChecked = false;
-                    }
-                    break;
-
-                case "BulletsToggle":
-                    _isBullets = check;
-                    break;
-            }
             MultiText.Focus();
         }
 
         private void MultiTextKeyDown(object sender, KeyEventArgs e)
         {
-            var key = e.Key.ToString();
-            if (!char.TryParse(key, out var c) || !char.IsLetterOrDigit(c)
-                || (Keyboard.GetKeyStates(Key.LeftCtrl) | Keyboard.GetKeyStates(Key.RightCtrl)
-                    & KeyStates.Down) == KeyStates.Down)
+            try
             {
-                if (_isBullets && e.Key == Key.Enter)
-                {
-                    var runE = new Run(string.Empty, MultiText.CaretPosition)
-                    {
-                        Text = "\n• "
-                    };
-                    e.Handled = true;
-                    MultiText.CaretPosition = runE.ContentEnd.GetInsertionPosition(LogicalDirection.Forward);
-                    SaveRichTextBox();
-                }
-                return;
+                var key = e.Key.ToString();
+                if (_note.ValidateKeyDownEvent(key, e))
+                    return;
+
+                e.Handled = true;
+
+                _note.SetRunSettings(key);
             }
-            e.Handled = true;
-
-            var run = new Run(string.Empty, MultiText.CaretPosition);
-
-            if (!MultiText.Selection.IsEmpty)
-                MultiText.Selection.Text = string.Empty;
-
-            if (_isBold)
-                run.FontWeight = FontWeights.Bold;
-            if (_isItalic)
-                run.FontStyle = FontStyles.Italic;
-            if (_isUnderline)
-                run.TextDecorations = TextDecorations.Underline;
-            else if (_isStrike)
-                run.TextDecorations = TextDecorations.Strikethrough;
-
-            var shiftToggle = (Keyboard.GetKeyStates(Key.LeftShift) |
-                               Keyboard.GetKeyStates(Key.RightShift) & KeyStates.Toggled) ==
-                              KeyStates.Toggled;
-
-            run.Text = (Keyboard.GetKeyStates(Key.CapsLock) & KeyStates.Toggled) == KeyStates.Toggled
-                ? shiftToggle ? key : key.ToLower()
-                : shiftToggle ? key.ToLower() : key;
-
-            MultiText.CaretPosition = run.ContentEnd.GetInsertionPosition(LogicalDirection.Forward);
-            SaveRichTextBox();
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong. \nError message: " + ex.Message);
+            }
         }
 
         private async void WindowGotFocus(object sender, RoutedEventArgs e)
@@ -167,24 +89,10 @@ namespace destNotes.View
             _isFocused = false;
         }
 
-        private void CloseNote(object sender, RoutedEventArgs e)
+        private async void CloseNote(object sender, RoutedEventArgs e)
         {
+            await _note.SaveNoteText(true);
             this.Close();
-        }
-
-        private void SaveRichTextBox()
-        {
-            if (!_canSave)
-                _canSave = true;
-        }
-
-        private void LoadRichTextBox()
-        {
-            if (!File.Exists($"{_id}.xaml")) return;
-            var range = new TextRange(MultiText.Document.ContentStart, MultiText.Document.ContentEnd);
-            var fStream = new FileStream($"{_id}.xaml", FileMode.OpenOrCreate);
-            range.Load(fStream, DataFormats.XamlPackage);
-            fStream.Close();
         }
 
         private void NoteWindowSizeChanged(object sender, SizeChangedEventArgs e)
@@ -198,19 +106,8 @@ namespace destNotes.View
             while (true)
             {
                 await Task.Delay(5000);
-                if (_canSave)
-                    await SaveNoteText();
+                await _note.SaveNoteText(false);
             }
-        }
-
-        private Task SaveNoteText()
-        {
-            var range = new TextRange(MultiText.Document.ContentStart, MultiText.Document.ContentEnd);
-            var fStream = new FileStream($"{_id}.xaml", FileMode.Create);
-            range.Save(fStream, DataFormats.XamlPackage);
-            fStream.Close();
-            _canSave = false;
-            return Task.CompletedTask;
         }
 
         private void ShowOptions(object sender, RoutedEventArgs e)
@@ -226,21 +123,26 @@ namespace destNotes.View
                 var note = _noteViewModel.Note;
                 note.Color = new SolidColorBrush(Color.FromRgb(color.R, color.G, color.B));
                 _noteViewModel.SaveNote();
-                var luminance = 0.2126 * color.R + 0.7152 * color.G + 0.0722 * color.B;
-                if (luminance > 127.5)
-                {
-                    AddNoteImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/plus-dark.png", UriKind.Relative));
-                    CloseImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/window-close-dark.png", UriKind.Relative));
-                    OptionsImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/dots-horizontal-dark.png", UriKind.Relative));
-                }
-                else
-                {
-                    AddNoteImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/plus.png", UriKind.Relative));
-                    CloseImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/window-close.png", UriKind.Relative));
-                    OptionsImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/dots-horizontal.png", UriKind.Relative));
-                }
+                SetLuminance(color);
             }
             OptionsGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void SetLuminance(Color color)
+        {
+            var luminance = 0.2126 * color.R + 0.7152 * color.G + 0.0722 * color.B;
+            if (luminance > 127.5)
+            {
+                AddNoteImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/plus-dark.png", UriKind.Relative));
+                CloseImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/window-close-dark.png", UriKind.Relative));
+                OptionsImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/dots-horizontal-dark.png", UriKind.Relative));
+            }
+            else
+            {
+                AddNoteImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/plus.png", UriKind.Relative));
+                CloseImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/window-close.png", UriKind.Relative));
+                OptionsImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/dots-horizontal.png", UriKind.Relative));
+            }
         }
     }
 }

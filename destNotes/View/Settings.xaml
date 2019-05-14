@@ -9,11 +9,11 @@
         <Grid DockPanel.Dock="Top">
             <Rectangle Fill="{DynamicResource BackgroundColor}" MouseLeftButtonDown="MoveWindow"/>
             <DockPanel>
-                <Button DockPanel.Dock="Left" Name="ShowNoteList">
+                <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Left" Name="ShowNoteList">
                     <Image Source="../Assets/arrow-left.png"/>
                 </Button>
                 <TextBlock FontSize="18" Opacity="0.7" Text="Settings"/>
-                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Click="CloseApplication">
+                <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="CloseApplication">
                     <Image Source="../Assets/window-close.png"/>
                 </Button>
             </DockPanel>

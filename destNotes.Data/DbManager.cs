@@ -43,7 +43,12 @@ namespace destNotes.Data
 
         public async Task TruncateData(string name)
         {
-            await _connection.ExecuteAsync($"delete * from {name}");
+            await _connection.ExecuteAsync($"delete from {name}");
+        }
+
+        public async Task DeleteData(string name, string id)
+        {
+            await _connection.ExecuteAsync($"delete from {name} where Id = @id", new {id});
         }
     }
 }

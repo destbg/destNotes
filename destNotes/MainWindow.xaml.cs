@@ -21,48 +21,67 @@ namespace destNotes
 
             _controller = new DbController();
 
-            ShowNoteList(null, null);
-
-            var exitMenuItem = new System.Windows.Forms.MenuItem
-            {
-                Text = "E&xit"
-            };
-            var listMenuItem = new System.Windows.Forms.MenuItem
-            {
-                Text = "List"
-            };
-            exitMenuItem.Click += delegate
-            {
-                Application.Current.Shutdown();
-            };
-            listMenuItem.Click += delegate
-            {
-                this.WindowState = WindowState.Normal;
-            };
+            ShowNoteList();
 
             _ni = new NotifyIcon
             {
                 Icon = new System.Drawing.Icon("Assets/destlogo.ico"),
                 Visible = true,
                 Text = "destV5",
-                ContextMenu = new System.Windows.Forms.ContextMenu(
-                    new[] { listMenuItem, exitMenuItem })
+                ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip()
             };
+
+            var logoItem = new System.Windows.Forms.ToolStripMenuItem("Control panel",
+                System.Drawing.Image.FromFile("Assets/destlogo.ico"))
+            {
+                Enabled = false
+            };
+            var settingsItem = new System.Windows.Forms.ToolStripMenuItem("Settings",
+                null,
+                delegate
+                {
+                    this.Show();
+                    ShowSettings();
+                    this.WindowState = WindowState.Normal;
+                });
+            var listItem = new System.Windows.Forms.ToolStripMenuItem("List",
+                null,
+                delegate
+                {
+                    this.Show();
+                    ShowNoteList();
+                    this.WindowState = WindowState.Normal;
+                });
+            var exitItem = new System.Windows.Forms.ToolStripMenuItem("Exit", 
+                    null,
+                    delegate
+                    {
+                        Application.Current.Shutdown();
+                    });
+
+            _ni.ContextMenuStrip.Items.Add(logoItem);
+            _ni.ContextMenuStrip.Items.Add(new System.Windows.Forms.ToolStripSeparator());
+            _ni.ContextMenuStrip.Items.Add(settingsItem);
+            _ni.ContextMenuStrip.Items.Add(listItem);
+            _ni.ContextMenuStrip.Items.Add(new System.Windows.Forms.ToolStripSeparator());
+            _ni.ContextMenuStrip.Items.Add(exitItem);
+
             _ni.Click += delegate
             {
                 this.Show();
+                ShowNoteList();
                 this.WindowState = WindowState.Normal;
             };
         }
 
-        private void ShowSettings(object sender, RoutedEventArgs e)
+        private void ShowSettings(object sender = null, RoutedEventArgs e = null)
         {
             var settings = new Settings();
             settings.ShowNoteList.Click += ShowNoteList;
             ControlPrincipal.Content = settings;
         }
 
-        private void ShowNoteList(object sender, RoutedEventArgs e)
+        private void ShowNoteList(object sender = null, RoutedEventArgs e = null)
         {
             var noteList = new NoteList
             {
@@ -78,8 +97,26 @@ namespace destNotes
         {
             if (!((sender as ListBox)?.SelectedItem is Note noteModel)) return;
             var note = new NoteWindow(_controller, noteModel.Id);
+            note.ShowNoteList.Click += ShowNoteListClick;
+            note.DeleteNote.Click += DeleteNote;
             note.AddNote.Click += AddNote;
             note.Show();
+        }
+
+        private async void DeleteNote(object sender, RoutedEventArgs e)
+        {
+            if (!(sender is Button button)) return;
+            await _controller.DeleteNote(button.Tag.ToString());
+            var parent = VisualTreeHelper.GetParent(button);
+            while (!(parent is Window))
+                parent = VisualTreeHelper.GetParent(parent);
+            (parent as Window).Close();
+        }
+
+        private void ShowNoteListClick(object sender, RoutedEventArgs e)
+        {
+            this.Show();
+            ShowNoteList();
         }
 
         private async void AddNote(object sender, RoutedEventArgs e)
@@ -92,8 +129,11 @@ namespace destNotes
                 Edited = DateTime.Now
             });
             var note = new NoteWindow(_controller, id);
+            note.ShowNoteList.Click += ShowNoteListClick;
+            note.DeleteNote.Click += DeleteNote;
             note.AddNote.Click += AddNote;
             note.Show();
+            ShowNoteList();
         }
     }
 }
