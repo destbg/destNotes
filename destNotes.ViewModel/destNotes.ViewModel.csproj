@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbController.cs" />
-    <Compile Include="Input\NoteController.cs" />
+    <Compile Include="NoteController.cs" />
     <Compile Include="NoteListViewModel.cs" />
     <Compile Include="NoteViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
