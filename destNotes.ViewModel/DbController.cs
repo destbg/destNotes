@@ -1,5 +1,6 @@
 ﻿using destNotes.Data;
 using destNotes.Model;
+using destNotes.ViewModel.Interface;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using System.Windows.Media;
 
 namespace destNotes.ViewModel
 {
-    public class DbController
+    public class DbController : INoteController, ISettingsController, ITaskController
     {
         private readonly DbManager _manager;
 
@@ -18,16 +19,14 @@ namespace destNotes.ViewModel
 
         #region Note
 
-        public async Task<IEnumerable<Note>> LoadNotes()
-        {
-            return from note in await _manager.LoadData<NoteDb>("Notes")
-                   select new Note
-                   {
-                       Edited = note.Edited,
-                       Id = note.Id,
-                       Color = GetColorFromString(note.Color)
-                   };
-        }
+        public async Task<IEnumerable<Note>> LoadNotes() =>
+            from note in await _manager.LoadData<NoteDb>("Notes")
+            select new Note
+            {
+                Edited = note.Edited,
+                Id = note.Id,
+                Color = GetColorFromString(note.Color)
+            };
 
         public async Task<Note> LoadNote(string id)
         {
@@ -40,8 +39,7 @@ namespace destNotes.ViewModel
             };
         }
 
-        public async Task AddNote(Note note)
-        {
+        public async Task AddNote(Note note) =>
             await _manager.AddData("Notes",
                 new NoteDb
                 {
@@ -49,10 +47,8 @@ namespace destNotes.ViewModel
                     Id = note.Id,
                     Edited = note.Edited
                 });
-        }
 
-        public async Task SaveNote(Note note)
-        {
+        public async Task SaveNote(Note note) => 
             await _manager.OverrideData("Notes",
                 new NoteDb
                 {
@@ -60,20 +56,16 @@ namespace destNotes.ViewModel
                     Id = note.Id,
                     Edited = note.Edited
                 }, note.Id);
-        }
 
-        public async Task DeleteNote(string id)
-        {
+        public async Task DeleteNote(string id) =>
             await _manager.DeleteData("Notes", id);
-        }
 
-        #endregion
+        #endregion Note
         #region Settings
 
-        public async Task<Setting> LoadSetting()
-        {
-            return (await _manager.LoadData<Setting>("Settings")).FirstOrDefault();
-        }
+        public async Task<Setting> LoadSetting() => 
+            (await _manager.LoadData<Setting>("Settings"))
+            .FirstOrDefault();
 
         public async Task SaveSetting(Setting setting)
         {
@@ -81,7 +73,7 @@ namespace destNotes.ViewModel
             await _manager.AddData("Settings", setting);
         }
 
-        #endregion
+        #endregion Settings
         #region Tasks
 
         public async Task<IEnumerable<TaskModel>> LoadTasks()
@@ -131,17 +123,13 @@ namespace destNotes.ViewModel
             await _manager.AddListOfData("TasksList", task.List, "TaskId", task.Id);
         }
 
-        public async Task DeleteTask(string id)
-        {
+        public async Task DeleteTask(string id) => 
             await _manager.DeleteData("Tasks", id);
-        }
 
-        public async Task DeleteTaskText(string id)
-        {
+        public async Task DeleteTaskText(string id) => 
             await _manager.DeleteData("TasksList", id);
-        }
 
-        #endregion
+        #endregion Tasks
 
         private static SolidColorBrush GetColorFromString(string str)
         {
@@ -149,9 +137,7 @@ namespace destNotes.ViewModel
             return new SolidColorBrush(Color.FromRgb(split[0], split[1], split[2]));
         }
 
-        private static string GetStringFromColor(Color color)
-        {
-            return $"{color.R} {color.G} {color.B}";
-        }
+        private static string GetStringFromColor(Color color) => 
+            $"{color.R} {color.G} {color.B}";
     }
 }

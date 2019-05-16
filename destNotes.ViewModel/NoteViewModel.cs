@@ -1,5 +1,6 @@
 ﻿using destNotes.Model;
 using destNotes.ViewModel.Annotations;
+using destNotes.ViewModel.Interface;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -18,20 +19,12 @@ namespace destNotes.ViewModel
             }
         }
 
-        private readonly DbController _controller;
+        private readonly INoteController _controller;
 
-        public NoteViewModel(DbController controller, string id)
+        public NoteViewModel(INoteController controller, string id)
         {
             _controller = controller;
             _note = _controller.LoadNote(id).GetAwaiter().GetResult();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public async void SaveNote()
@@ -39,5 +32,11 @@ namespace destNotes.ViewModel
             await _controller.SaveNote(Note);
             OnPropertyChanged(nameof(Note));
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => 
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

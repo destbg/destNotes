@@ -32,13 +32,13 @@
                     Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Left"
                     UsingAlphaChannel="False" DockPanel.Dock="Top" VerticalAlignment="Top"
                     Name="ColorCanvas" SelectedColor="{Binding Note.Color.Color}"/>
-                <StackPanel VerticalAlignment="Top" Background="{DynamicResource BackgroundColor}" >
+                <StackPanel VerticalAlignment="Top" Background="{DynamicResource BackgroundColor}">
                     <Button Width="Auto" HorizontalContentAlignment="Left" Name="ShowNoteList">
                         <Grid>
                             <Rectangle Fill="Black" Opacity="0"/>
                             <DockPanel>
                                 <Image Width="20" Height="20" Margin="5" Source="../Assets/view-list.png" HorizontalAlignment="Left"/>
-                                <TextBlock Text="Note List" Margin="5" />
+                                <TextBlock Text="Note List" Margin="5"/>
                             </DockPanel>
                         </Grid>
                     </Button>
@@ -47,7 +47,7 @@
                             <Rectangle Fill="Black" Opacity="0"/>
                             <DockPanel>
                                 <Image Width="20" Height="20" Margin="5" Source="../Assets/trash-can-outline.png" HorizontalAlignment="Left"/>
-                                <TextBlock Text="Delete Note" Margin="5" />
+                                <TextBlock Text="Delete Note" Margin="5"/>
                             </DockPanel>
                         </Grid>
                     </Button>

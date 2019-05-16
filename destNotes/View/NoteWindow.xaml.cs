@@ -1,4 +1,5 @@
 ﻿using destNotes.ViewModel;
+using destNotes.ViewModel.Interface;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,7 +17,7 @@ namespace destNotes.View
         private readonly NoteController _note;
         private bool _isFocused;
 
-        public NoteWindow(DbController controller, string id)
+        public NoteWindow(INoteController controller, string id)
         {
             InitializeComponent();
             _note = new NoteController(id, MultiText);
@@ -32,10 +33,8 @@ namespace destNotes.View
             this.ShowInTaskbar = false;
         }
 
-        private void MoveWindow(object sender, MouseButtonEventArgs e)
-        {
+        private void MoveWindow(object sender, MouseButtonEventArgs e) => 
             this.DragMove();
-        }
 
         private void ChangeText(object sender, RoutedEventArgs e)
         {
@@ -109,10 +108,8 @@ namespace destNotes.View
             }
         }
 
-        private void ShowOptions(object sender, RoutedEventArgs e)
-        {
+        private void ShowOptions(object sender, RoutedEventArgs e) => 
             OptionsGrid.Visibility = Visibility.Visible;
-        }
 
         private void HideSettings(object sender, MouseButtonEventArgs e)
         {

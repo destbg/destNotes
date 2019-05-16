@@ -1,10 +1,11 @@
-﻿using System;
+﻿using destNotes.Model;
+using destNotes.ViewModel.Annotations;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using destNotes.Model;
-using destNotes.ViewModel.Annotations;
+using destNotes.ViewModel.Interface;
 
 namespace destNotes.ViewModel
 {
@@ -14,9 +15,9 @@ namespace destNotes.ViewModel
 
         public ObservableCollection<TaskText> Tasks { get; }
 
-        private readonly DbController _controller;
+        private readonly ITaskController _controller;
 
-        public TaskViewModel(DbController controller, string id)
+        public TaskViewModel(ITaskController controller, string id)
         {
             _controller = controller;
             Task = _controller.LoadTask(id).GetAwaiter().GetResult();
@@ -41,17 +42,13 @@ namespace destNotes.ViewModel
             SaveTask();
         }
 
+        public async void RemoveTask(string id) => 
+            await _controller.DeleteTaskText(id);
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public async void RemoveTask(TaskText taskText)
-        {
-            await _controller.DeleteTaskText(taskText.Id);
-        }
     }
 }

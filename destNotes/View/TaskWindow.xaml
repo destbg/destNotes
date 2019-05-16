@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:destNotes.View"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d" WindowStyle="None" AllowsTransparency="True"
-        Title="Task" MinHeight="400" MinWidth="300" Height="400" Width="300">
+        Title="Task" MinHeight="300" MinWidth="200" Height="400" Width="300">
     <Window.Resources>
         <!--Resize-->
         <Style TargetType="{x:Type local:TaskWindow}">
@@ -25,32 +26,75 @@
     <Window.Background>
         <SolidColorBrush Opacity="0.9" Color="{Binding Path=Color, Source={StaticResource BackgroundColor}}"/>
     </Window.Background>
-    <DockPanel>
-        <Grid DockPanel.Dock="Top" MouseLeftButtonDown="MoveWindow">
-            <Rectangle Fill="{Binding Task.Color}" Opacity="0.5"/>
-            <Button Style="{StaticResource FlatButton}" HorizontalAlignment="Left" Name="AddTask">
-                <Image Source="../Assets/plus.png" />
-            </Button>
-            <TextBox Text="{Binding Task.Name}" HorizontalAlignment="Center" MaxLength="20" 
-                LostKeyboardFocus="ChangeTaskName" AcceptsReturn="False"/>
-            <Button Style="{StaticResource FlatButton}" HorizontalAlignment="Right" Click="CloseTask">
-                <Image Source="../Assets/window-close.png" />
-            </Button>
+    <Grid>
+        <Grid Name="OptionsGrid" ZIndex="10" Visibility="Hidden">
+            <DockPanel ZIndex="1" HorizontalAlignment="Left">
+                <xctk:ColorCanvas Background="{DynamicResource BackgroundColor}"
+                                  Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Left"
+                                  UsingAlphaChannel="False" DockPanel.Dock="Top" VerticalAlignment="Top"
+                                  Name="ColorCanvas" SelectedColor="{Binding Task.Color.Color}"/>
+                <StackPanel VerticalAlignment="Top" Background="{DynamicResource BackgroundColor}">
+                    <Button Width="Auto" HorizontalContentAlignment="Left" Name="ShowTaskList">
+                        <Grid>
+                            <Rectangle Fill="Black" Opacity="0"/>
+                            <DockPanel>
+                                <Image Width="20" Height="20" Margin="5" Source="../Assets/view-list.png" HorizontalAlignment="Left"/>
+                                <TextBlock Text="Task List" Margin="5"/>
+                            </DockPanel>
+                        </Grid>
+                    </Button>
+                    <Button Width="Auto" HorizontalContentAlignment="Left" Name="DeleteTask" Tag="{Binding Task.Id}">
+                        <Grid>
+                            <Rectangle Fill="Black" Opacity="0"/>
+                            <DockPanel>
+                                <Image Width="20" Height="20" Margin="5" Source="../Assets/trash-can-outline.png" HorizontalAlignment="Left"/>
+                                <TextBlock Text="Delete Task" Margin="5"/>
+                            </DockPanel>
+                        </Grid>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+            <Rectangle Fill="Black" Opacity=".5"
+                       DockPanel.Dock="Bottom" MouseLeftButtonDown="HideSettings"/>
         </Grid>
-        <ListBox DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding Tasks}" PreviewMouseMove="TasksText_OnPreviewMouseMove"
-                 PreviewMouseLeftButtonDown="TasksText_OnMouseLeftButtonDown" PreviewMouseLeftButtonUp="TasksText_OnMouseLeftButtonUp"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="TasksText" SelectionChanged="ItemSelected">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBox Margin="10" Text="{Binding Text}" LostKeyboardFocus="SaveTaskText"
-                        TextWrapping="NoWrap" AcceptsReturn="False" Tag="{Binding Id}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <StackPanel VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Orientation="Horizontal" Height="40">
-            <Button Style="{StaticResource FlatButton}" Click="AddTaskToList">
-                <Image Source="../Assets/plus.png" />
-            </Button>
-        </StackPanel>
-    </DockPanel>
+        <DockPanel>
+            <Grid DockPanel.Dock="Top" MouseLeftButtonDown="MoveWindow">
+                <Rectangle Fill="{Binding Task.Color}" Opacity="0.5"/>
+                <DockPanel>
+                    <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Left" Name="AddTask">
+                        <Image Source="../Assets/plus.png" Name="AddTaskImage"/>
+                    </Button>
+                    <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" Click="CloseTask">
+                        <Image Source="../Assets/window-close.png" Name="CloseTaskImage"/>
+                    </Button>
+                    <TextBox Text="{Binding Task.Name}" DockPanel.Dock="Right" MaxLength="20"
+                             LostKeyboardFocus="ChangeTaskName" AcceptsReturn="False" TextWrapping="NoWrap"/>
+                </DockPanel>
+            </Grid>
+            <ListBox DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding Tasks}" PreviewMouseMove="TasksText_OnPreviewMouseMove"
+                     PreviewMouseLeftButtonDown="TasksText_OnMouseLeftButtonDown" PreviewMouseLeftButtonUp="TasksText_OnMouseLeftButtonUp"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="TasksText" SelectionChanged="ItemSelected">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBox Margin="10 10 20 10" Text="{Binding Text}" LostKeyboardFocus="SaveTaskText"
+                                     TextWrapping="NoWrap" AcceptsReturn="False" Tag="{Binding Id}"/>
+                            <Button Style="{StaticResource FlatButton}" Width="20" Height="20"
+                                HorizontalAlignment="Right" Click="RemoveTask">
+                                <Image Source="../Assets/window-close.png" Name="AddTaskImage"/>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Orientation="Horizontal" Height="40">
+                <Button Style="{StaticResource FlatButton}" Click="AddTaskToList">
+                    <Image Source="../Assets/plus.png"/>
+                </Button>
+                <Button Style="{StaticResource FlatButton}" Click="ShowOptions">
+                    <Image Source="../Assets/dots-horizontal.png"/>
+                </Button>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
 </Window>

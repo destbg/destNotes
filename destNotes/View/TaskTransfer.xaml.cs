@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using destNotes.Model;
+﻿using destNotes.Model;
+using System.Windows;
 
 namespace destNotes.View
 {

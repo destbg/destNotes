@@ -44,11 +44,17 @@ namespace destNotes
                     ShowSettings();
                     this.WindowState = WindowState.Normal;
                 });
-            var listItem = new System.Windows.Forms.ToolStripMenuItem("List",
+            var taskListItem = new System.Windows.Forms.ToolStripMenuItem("Task List",
                 null,
                 delegate
                 {
-                    this.Show();
+                    ShowTaskList();
+                    this.WindowState = WindowState.Normal;
+                });
+            var noteListItem = new System.Windows.Forms.ToolStripMenuItem("Note List",
+                null,
+                delegate
+                {
                     ShowNoteList();
                     this.WindowState = WindowState.Normal;
                 });
@@ -62,16 +68,19 @@ namespace destNotes
             ni.ContextMenuStrip.Items.Add(logoItem);
             ni.ContextMenuStrip.Items.Add(new System.Windows.Forms.ToolStripSeparator());
             ni.ContextMenuStrip.Items.Add(settingsItem);
-            ni.ContextMenuStrip.Items.Add(listItem);
+            ni.ContextMenuStrip.Items.Add(noteListItem);
+            ni.ContextMenuStrip.Items.Add(taskListItem);
             ni.ContextMenuStrip.Items.Add(new System.Windows.Forms.ToolStripSeparator());
             ni.ContextMenuStrip.Items.Add(exitItem);
 
-            ni.Click += delegate
-            {
-                this.Show();
-                ShowNoteList();
-                this.WindowState = WindowState.Normal;
-            };
+            ni.MouseClick += Ni_MouseClick;
+        }
+
+        private void Ni_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button != System.Windows.Forms.MouseButtons.Left) return;
+            ShowNoteList();
+            this.WindowState = WindowState.Normal;
         }
 
         private void ShowSettings(object sender = null, RoutedEventArgs e = null)
@@ -83,6 +92,7 @@ namespace destNotes
 
         private void ShowNoteList(object sender = null, RoutedEventArgs e = null)
         {
+            this.Show();
             var noteList = new NoteList
             {
                 DataContext = new NoteListViewModel(_controller)
@@ -96,6 +106,7 @@ namespace destNotes
 
         private void ShowTaskList(object sender = null, RoutedEventArgs e = null)
         {
+            this.Show();
             var taskList = new TaskList
             {
                 DataContext = new TaskListViewModel(_controller)
@@ -118,8 +129,21 @@ namespace destNotes
                 Name = "Default Name"
             });
             var task = new TaskWindow(_controller, id);
+            task.DeleteTask.Click += DeleteTask;
+            task.ShowTaskList.Click += ShowTaskList;
             task.AddTask.Click += AddTask;
             task.Show();
+            ShowTaskList();
+        }
+
+        private async void DeleteTask(object sender, RoutedEventArgs e)
+        {
+            if (!(sender is Button button)) return;
+            await _controller.DeleteTask(button.Tag.ToString());
+            var parent = VisualTreeHelper.GetParent(button);
+            while (!(parent is Window))
+                parent = VisualTreeHelper.GetParent(parent);
+            (parent as Window).Close();
             ShowTaskList();
         }
 
@@ -128,6 +152,8 @@ namespace destNotes
             var listBox = sender as ListBox;
             if (!(listBox?.SelectedItem is TaskModel taskModel)) return;
             var task = new TaskWindow(_controller, taskModel.Id);
+            task.DeleteTask.Click += DeleteTask;
+            task.ShowTaskList.Click += ShowTaskList;
             task.AddTask.Click += AddTask;
             task.Show();
             listBox.UnselectAll();
@@ -138,7 +164,7 @@ namespace destNotes
             var listBox = sender as ListBox;
             if (!(listBox?.SelectedItem is Note noteModel)) return;
             var note = new NoteWindow(_controller, noteModel.Id);
-            note.ShowNoteList.Click += ShowNoteListClick;
+            note.ShowNoteList.Click += ShowNoteList;
             note.DeleteNote.Click += DeleteNote;
             note.AddNote.Click += AddNote;
             note.Show();
@@ -153,11 +179,6 @@ namespace destNotes
             while (!(parent is Window))
                 parent = VisualTreeHelper.GetParent(parent);
             (parent as Window).Close();
-        }
-
-        private void ShowNoteListClick(object sender, RoutedEventArgs e)
-        {
-            this.Show();
             ShowNoteList();
         }
 
@@ -171,7 +192,7 @@ namespace destNotes
                 Edited = DateTime.Now
             });
             var note = new NoteWindow(_controller, id);
-            note.ShowNoteList.Click += ShowNoteListClick;
+            note.ShowNoteList.Click += ShowNoteList;
             note.DeleteNote.Click += DeleteNote;
             note.AddNote.Click += AddNote;
             note.Show();

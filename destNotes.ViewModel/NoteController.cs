@@ -62,7 +62,7 @@ namespace destNotes.ViewModel
             var shiftToggle = (Keyboard.GetKeyStates(Key.LeftShift) |
                                Keyboard.GetKeyStates(Key.RightShift) & KeyStates.Toggled) ==
                               KeyStates.Toggled;
-            
+
             run.Text = Keyboard.GetKeyStates(Key.CapsLock) == KeyStates.None
                 ? shiftToggle ? key : key.ToLower()
                 : shiftToggle

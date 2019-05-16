@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbController.cs" />
+    <Compile Include="Interface\INoteController.cs" />
+    <Compile Include="Interface\ISettingsController.cs" />
+    <Compile Include="Interface\ITaskController.cs" />
     <Compile Include="NoteController.cs" />
     <Compile Include="NoteListViewModel.cs" />
     <Compile Include="NoteViewModel.cs" />

@@ -1,9 +1,13 @@
 ﻿using destNotes.Model;
 using destNotes.ViewModel;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using destNotes.ViewModel.Interface;
 
 namespace destNotes.View
 {
@@ -14,11 +18,12 @@ namespace destNotes.View
         private TaskText _taskText;
         private TaskTransfer _taskTransfer;
 
-        public TaskWindow(DbController controller, string id)
+        public TaskWindow(ITaskController controller, string id)
         {
             InitializeComponent();
             _taskViewModel = new TaskViewModel(controller, id);
             DataContext = _taskViewModel;
+            SetLuminance(_taskViewModel.Task.Color.Color);
 
             this.ShowInTaskbar = false;
         }
@@ -71,7 +76,7 @@ namespace destNotes.View
                     if (!(window is TaskWindow task)) continue;
                     if (!(task.Top < y) || !(y < task.Top + task.Height) || !(task.Left < x) ||
                         !(x < task.Left + task.Width)) continue;
-                    _taskViewModel.RemoveTask(_taskTransfer.Task);
+                    _taskViewModel.RemoveTask(_taskTransfer.Task.Id);
                     task.DragDropTask(_taskTransfer.Task);
                     overATask = true;
                 }
@@ -113,6 +118,49 @@ namespace destNotes.View
             task.TaskId = _taskViewModel.Task.Id;
             _taskViewModel.Tasks.Add(task);
             _taskViewModel.SaveTask();
+        }
+
+        private void ShowOptions(object sender, RoutedEventArgs e) =>
+            OptionsGrid.Visibility = Visibility.Visible;
+
+        private void HideSettings(object sender, MouseButtonEventArgs e)
+        {
+            if (ColorCanvas.SelectedColor.HasValue)
+            {
+                var color = ColorCanvas.SelectedColor.Value;
+                var task = _taskViewModel.Task;
+                task.Color = new SolidColorBrush(Color.FromRgb(color.R, color.G, color.B));
+                _taskViewModel.SaveTask();
+                SetLuminance(color);
+            }
+            OptionsGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void SetLuminance(Color color)
+        {
+            var luminance = 0.2126 * color.R + 0.7152 * color.G + 0.0722 * color.B;
+            if (luminance > 127.5)
+            {
+                AddTaskImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/plus-dark.png", UriKind.Relative));
+                CloseTaskImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/window-close-dark.png", UriKind.Relative));
+            }
+            else
+            {
+                AddTaskImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/plus.png", UriKind.Relative));
+                CloseTaskImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/window-close.png", UriKind.Relative));
+            }
+        }
+
+        private void RemoveTask(object sender, RoutedEventArgs e)
+        {
+            if (!((sender as Button)?.Parent is Grid parent)) return;
+            foreach (TextBox child in parent.Children)
+            {
+                var tag = child.Tag.ToString();
+                _taskViewModel.Tasks.Remove(_taskViewModel.Tasks.First(f => f.Id == tag));
+                _taskViewModel.RemoveTask(tag);
+                return;
+            }
         }
     }
 }

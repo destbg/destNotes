@@ -1,5 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using destNotes.Model;
+﻿using destNotes.Model;
+using System.Collections.ObjectModel;
+using destNotes.ViewModel.Interface;
 
 namespace destNotes.ViewModel
 {
@@ -7,9 +8,9 @@ namespace destNotes.ViewModel
     {
         public ObservableCollection<TaskModel> Tasks { get; }
 
-        private readonly DbController _controller;
+        private readonly ITaskController _controller;
 
-        public TaskListViewModel(DbController controller)
+        public TaskListViewModel(ITaskController controller)
         {
             _controller = controller;
             Tasks = new ObservableCollection<TaskModel>(controller.LoadTasks().GetAwaiter().GetResult());

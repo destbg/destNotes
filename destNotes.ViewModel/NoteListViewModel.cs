@@ -1,4 +1,5 @@
 ﻿using destNotes.Model;
+using destNotes.ViewModel.Interface;
 using System.Collections.ObjectModel;
 
 namespace destNotes.ViewModel
@@ -7,9 +8,9 @@ namespace destNotes.ViewModel
     {
         public ObservableCollection<Note> Notes { get; }
 
-        private readonly DbController _controller;
+        private readonly INoteController _controller;
 
-        public NoteListViewModel(DbController controller)
+        public NoteListViewModel(INoteController controller)
         {
             _controller = controller;
             Notes = new ObservableCollection<Note>(controller.LoadNotes().GetAwaiter().GetResult());
