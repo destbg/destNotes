@@ -16,8 +16,11 @@
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" Click="CloseApplication">
                     <Image Source="../Assets/window-close.png"/>
                 </Button>
-                <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" HorizontalAlignment="Right" Name="ShowSettings">
+                <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" Name="ShowSettings">
                     <Image Source="../Assets/settings-outline.png"/>
+                </Button>
+                <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" HorizontalAlignment="Right" Name="ShowTasks">
+                    <Image Source="../Assets/application.png"/>
                 </Button>
             </DockPanel>
         </Grid>
