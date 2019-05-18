@@ -14,5 +14,6 @@ namespace destNotes.Model
         public string Id { get; set; }
         public string Name { get; set; }
         public string Color { get; set; }
+        public double Opacity { get; set; }
     }
 }

@@ -11,16 +11,16 @@
             <Rectangle Fill="{DynamicResource BackgroundColor}" MouseLeftButtonDown="MoveWindow"/>
             <DockPanel>
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Left" Name="AddNote">
-                    <Image Source="../Assets/plus.png"/>
+                    <Image Source="{DynamicResource Add}"/>
                 </Button>
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" Click="CloseApplication">
-                    <Image Source="../Assets/window-close.png"/>
+                    <Image Source="{DynamicResource Close}"/>
                 </Button>
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" Name="ShowSettings">
-                    <Image Source="../Assets/settings-outline.png"/>
+                    <Image Source="{DynamicResource Settings}"/>
                 </Button>
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" HorizontalAlignment="Right" Name="ShowTasks">
-                    <Image Source="../Assets/application.png"/>
+                    <Image Source="{DynamicResource TaskList}"/>
                 </Button>
             </DockPanel>
         </Grid>

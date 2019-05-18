@@ -162,5 +162,21 @@ namespace destNotes.View
                 return;
             }
         }
+
+        private void OpacitySliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _taskViewModel.PreviewOpacity(e.NewValue);
+        }
+
+        private void OpacitySliderMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MenuBackground.Visibility = Visibility.Visible;
+            _taskViewModel.SaveTask();
+        }
+
+        private void OpacitySliderMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MenuBackground.Visibility = Visibility.Hidden;
+        }
     }
 }

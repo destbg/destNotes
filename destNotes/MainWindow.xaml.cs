@@ -74,6 +74,26 @@ namespace destNotes
             ni.ContextMenuStrip.Items.Add(exitItem);
 
             ni.MouseClick += Ni_MouseClick;
+
+
+            var dirs = Application.Current.Resources.MergedDictionaries;
+            switch (_controller.LoadSetting().GetAwaiter().GetResult()?.Theme.ToString())
+            {
+                case "Light":
+                    dirs.RemoveAt(dirs.Count - 1);
+                    dirs.Add(new ResourceDictionary
+                    {
+                        Source = new Uri("/destNotes;component/View/Theme/LightTheme.xaml", UriKind.Relative)
+                    });
+                    break;
+                case "Dark":
+                    dirs.RemoveAt(dirs.Count - 1);
+                    dirs.Add(new ResourceDictionary
+                    {
+                        Source = new Uri("/destNotes;component/View/Theme/DarkTheme.xaml", UriKind.Relative)
+                    });
+                    break;
+            }
         }
 
         private void Ni_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -85,7 +105,7 @@ namespace destNotes
 
         private void ShowSettings(object sender = null, RoutedEventArgs e = null)
         {
-            var settings = new Settings();
+            var settings = new Settings(_controller);
             settings.ShowNoteList.Click += ShowNoteList;
             ControlPrincipal.Content = settings;
         }
@@ -126,7 +146,8 @@ namespace destNotes
                 Id = id,
                 Color = new SolidColorBrush(Colors.OrangeRed),
                 List = new List<TaskText>(),
-                Name = "Default Name"
+                Name = "Default Name",
+                Opacity = 0.9
             });
             var task = new TaskWindow(_controller, id);
             task.DeleteTask.Click += DeleteTask;

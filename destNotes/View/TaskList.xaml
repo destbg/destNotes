@@ -10,23 +10,23 @@
             <Rectangle Fill="{DynamicResource BackgroundColor}" MouseLeftButtonDown="MoveWindow"/>
             <DockPanel>
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Left" Name="AddTask">
-                    <Image Source="../Assets/plus.png"/>
+                    <Image Source="{DynamicResource Add}"/>
                 </Button>
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" Click="CloseApplication">
-                    <Image Source="../Assets/window-close.png"/>
+                    <Image Source="{DynamicResource Close}"/>
                 </Button>
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" Name="ShowSettings">
-                    <Image Source="../Assets/settings-outline.png"/>
+                    <Image Source="{DynamicResource Settings}"/>
                 </Button>
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" HorizontalAlignment="Right" Name="ShowNotes">
-                    <Image Source="../Assets/calendar-text-outline.png"/>
+                    <Image Source="{DynamicResource NoteList}"/>
                 </Button>
             </DockPanel>
         </Grid>
         <ListBox DockPanel.Dock="Bottom" ItemsSource="{Binding Tasks}" Name="TaskListBox">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Background="{Binding Color}">
+                    <Grid Background="{Binding Color}" Height="20" Margin="5">
                         <TextBlock Text="{Binding Name}" HorizontalAlignment="Center"/>
                     </Grid>
                 </DataTemplate>

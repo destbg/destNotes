@@ -37,7 +37,7 @@
                         <Grid>
                             <Rectangle Fill="Black" Opacity="0"/>
                             <DockPanel>
-                                <Image Width="20" Height="20" Margin="5" Source="../Assets/view-list.png" HorizontalAlignment="Left"/>
+                                <Image Width="20" Height="20" Margin="5" Source="{DynamicResource List}" HorizontalAlignment="Left"/>
                                 <TextBlock Text="Note List" Margin="5"/>
                             </DockPanel>
                         </Grid>
@@ -46,7 +46,7 @@
                         <Grid>
                             <Rectangle Fill="Black" Opacity="0"/>
                             <DockPanel>
-                                <Image Width="20" Height="20" Margin="5" Source="../Assets/trash-can-outline.png" HorizontalAlignment="Left"/>
+                                <Image Width="20" Height="20" Margin="5" Source="{DynamicResource Trash}" HorizontalAlignment="Left"/>
                                 <TextBlock Text="Delete Note" Margin="5"/>
                             </DockPanel>
                         </Grid>
@@ -78,19 +78,19 @@
                 FontSize="14" Height="310" PreviewKeyDown="MultiTextKeyDown"/>
             <StackPanel Name="FooterPanel" Orientation="Horizontal" DockPanel.Dock="Bottom">
                 <ToggleButton Click="ChangeText" Tag="Bold" Name="BoldToggle">
-                    <Image Source="../Assets/format-bold.png"/>
+                    <Image Source="{DynamicResource Bold}"/>
                 </ToggleButton>
                 <ToggleButton Click="ChangeText" Name="ItalicToggle">
-                    <Image Source="../Assets/format-italic.png"/>
+                    <Image Source="{DynamicResource Italic}"/>
                 </ToggleButton>
                 <ToggleButton Click="ChangeText" Name="UnderlineToggle">
-                    <Image Source="../Assets/format-underline.png"/>
+                    <Image Source="{DynamicResource Underline}"/>
                 </ToggleButton>
                 <ToggleButton Click="ChangeText" Name="StrikeToggle">
-                    <Image Source="../Assets/format-strikethrough.png"/>
+                    <Image Source="{DynamicResource Strikethrough}"/>
                 </ToggleButton>
                 <ToggleButton Click="ChangeText" Name="BulletsToggle">
-                    <Image Source="../Assets/format-list-bulleted.png"/>
+                    <Image Source="{DynamicResource Bulleted}"/>
                 </ToggleButton>
             </StackPanel>
         </DockPanel>

@@ -129,15 +129,15 @@ namespace destNotes.View
             var luminance = 0.2126 * color.R + 0.7152 * color.G + 0.0722 * color.B;
             if (luminance > 127.5)
             {
-                AddNoteImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/plus-dark.png", UriKind.Relative));
-                CloseImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/window-close-dark.png", UriKind.Relative));
-                OptionsImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/dots-horizontal-dark.png", UriKind.Relative));
+                AddNoteImage.Source = new BitmapImage(new Uri("/destNotes;component/Assets/plus-dark.png", UriKind.Relative));
+                CloseImage.Source = new BitmapImage(new Uri("/destNotes;component/Assets/window-close-dark.png", UriKind.Relative));
+                OptionsImage.Source = new BitmapImage(new Uri("/destNotes;component/Assets/dots-horizontal-dark.png", UriKind.Relative));
             }
             else
             {
-                AddNoteImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/plus.png", UriKind.Relative));
-                CloseImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/window-close.png", UriKind.Relative));
-                OptionsImage.Source = new BitmapImage(new Uri(@"/destNotes;component/Assets/dots-horizontal.png", UriKind.Relative));
+                AddNoteImage.Source = new BitmapImage(new Uri("/destNotes;component/Assets/plus.png", UriKind.Relative));
+                CloseImage.Source = new BitmapImage(new Uri("/destNotes;component/Assets/window-close.png", UriKind.Relative));
+                OptionsImage.Source = new BitmapImage(new Uri("/destNotes;component/Assets/dots-horizontal.png", UriKind.Relative));
             }
         }
     }

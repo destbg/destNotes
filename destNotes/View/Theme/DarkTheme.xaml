@@ -3,4 +3,18 @@
     <SolidColorBrush x:Key="BackgroundColor" Color="#181a1b"/>
     <SolidColorBrush x:Key="ForegroundColor" Color="#e8e6e3"/>
     <SolidColorBrush x:Key="HoverColor" Color="#4c4c4c"/>
+    <BitmapImage x:Key="Add" UriSource="../../Assets/plus.png" />
+    <BitmapImage x:Key="Close" UriSource="../../Assets/window-close.png" />
+    <BitmapImage x:Key="Settings" UriSource="../../Assets/settings-outline.png" />
+    <BitmapImage x:Key="TaskList" UriSource="../../Assets/application.png" />
+    <BitmapImage x:Key="List" UriSource="../../Assets/view-list.png" />
+    <BitmapImage x:Key="Trash" UriSource="../../Assets/trash-can-outline.png" />
+    <BitmapImage x:Key="Bold" UriSource="../../Assets/format-bold.png" />
+    <BitmapImage x:Key="Italic" UriSource="../../Assets/format-italic.png" />
+    <BitmapImage x:Key="Underline" UriSource="../../Assets/format-underline.png" />
+    <BitmapImage x:Key="Strikethrough" UriSource="../../Assets/format-strikethrough.png" />
+    <BitmapImage x:Key="Bulleted" UriSource="../../Assets/format-list-bulleted.png" />
+    <BitmapImage x:Key="Left" UriSource="../../Assets/arrow-left.png" />
+    <BitmapImage x:Key="NoteList" UriSource="../../Assets/calendar-text-outline.png" />
+    <BitmapImage x:Key="Menu" UriSource="../../Assets/dots-horizontal.png" />
 </ResourceDictionary>

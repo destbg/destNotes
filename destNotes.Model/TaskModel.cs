@@ -9,5 +9,6 @@ namespace destNotes.Model
         public string Name { get; set; }
         public IList<TaskText> List { get; set; }
         public SolidColorBrush Color { get; set; }
+        public double Opacity { get; set; }
     }
 }

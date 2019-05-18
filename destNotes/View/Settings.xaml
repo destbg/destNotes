@@ -5,20 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="300">
-    <DockPanel>
-        <Grid DockPanel.Dock="Top">
+    <StackPanel>
+        <Grid>
             <Rectangle Fill="{DynamicResource BackgroundColor}" MouseLeftButtonDown="MoveWindow"/>
             <DockPanel>
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Left" Name="ShowNoteList">
-                    <Image Source="../Assets/arrow-left.png"/>
+                    <Image Source="{DynamicResource Left}"/>
                 </Button>
                 <TextBlock FontSize="18" Opacity="0.7" Text="Settings"/>
                 <Button Style="{StaticResource FlatButton}" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="CloseApplication">
-                    <Image Source="../Assets/window-close.png"/>
+                    <Image Source="{DynamicResource Close}"/>
                 </Button>
             </DockPanel>
         </Grid>
         <StackPanel>
+            <StackPanel Margin="10">
+                <TextBlock FontSize="18" Text="Theme"/>
+                <RadioButton GroupName="Theme" Name="DarkTheme" Content="Dark" Foreground="{DynamicResource ForegroundColor}"
+                             Margin="2" Click="ChangeTheme"/>
+                <RadioButton GroupName="Theme" Name="LightTheme" Content="Light" Foreground="{DynamicResource ForegroundColor}"
+                             Margin="2" Click="ChangeTheme"/>
+            </StackPanel>
         </StackPanel>
-    </DockPanel>
+    </StackPanel>
 </UserControl>

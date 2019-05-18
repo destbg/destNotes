@@ -3,6 +3,6 @@
     public enum Theme
     {
         Dark,
-        White
+        Light
     }
 }

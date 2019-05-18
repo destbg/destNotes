@@ -85,7 +85,8 @@ namespace destNotes.ViewModel
                        Id = task.Id,
                        Name = task.Name,
                        Color = GetColorFromString(task.Color),
-                       List = list.Where(w => w.TaskId == task.Id).ToList()
+                       List = list.Where(w => w.TaskId == task.Id).ToList(),
+                       Opacity = task.Opacity
                    };
         }
 
@@ -97,7 +98,8 @@ namespace destNotes.ViewModel
                 Id = task.Id,
                 Color = GetColorFromString(task.Color),
                 Name = task.Name,
-                List = (await _manager.LoadData<TaskText>("TasksList", "TaskId", id)).ToList()
+                List = (await _manager.LoadData<TaskText>("TasksList", "TaskId", id)).ToList(),
+                Opacity = task.Opacity
             };
         }
 
@@ -107,7 +109,8 @@ namespace destNotes.ViewModel
             {
                 Id = task.Id,
                 Color = GetStringFromColor(task.Color.Color),
-                Name = task.Name
+                Name = task.Name,
+                Opacity = task.Opacity
             });
             await _manager.AddListOfData("TasksList", task.List, "TaskId", task.Id);
         }
@@ -118,7 +121,8 @@ namespace destNotes.ViewModel
             {
                 Id = task.Id,
                 Color = GetStringFromColor(task.Color.Color),
-                Name = task.Name
+                Name = task.Name,
+                Opacity = task.Opacity
             }, task.Id);
             await _manager.AddListOfData("TasksList", task.List, "TaskId", task.Id);
         }

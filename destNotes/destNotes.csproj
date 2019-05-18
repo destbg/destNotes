@@ -173,6 +173,17 @@
     <Resource Include="Assets\trash-can-outline.png" />
     <Resource Include="Assets\application.png" />
     <Resource Include="Assets\calendar-text-outline.png" />
+    <Resource Include="Assets\application-dark.png" />
+    <Resource Include="Assets\settings-outline-dark.png" />
+    <Resource Include="Assets\format-bold-dark.png" />
+    <Resource Include="Assets\format-italic-dark.png" />
+    <Resource Include="Assets\format-list-bulleted-dark.png" />
+    <Resource Include="Assets\format-strikethrough-dark.png" />
+    <Resource Include="Assets\format-underline-dark.png" />
+    <Resource Include="Assets\trash-can-outline-dark.png" />
+    <Resource Include="Assets\view-list-dark.png" />
+    <Resource Include="Assets\arrow-left-dark.png" />
+    <Resource Include="Assets\calendar-text-outline-dark.png" />
     <Content Include="DbContext.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
