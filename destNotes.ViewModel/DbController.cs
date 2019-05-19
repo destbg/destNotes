@@ -48,7 +48,7 @@ namespace destNotes.ViewModel
                     Edited = note.Edited
                 });
 
-        public async Task SaveNote(Note note) => 
+        public async Task SaveNote(Note note) =>
             await _manager.OverrideData("Notes",
                 new NoteDb
                 {
@@ -63,15 +63,66 @@ namespace destNotes.ViewModel
         #endregion Note
         #region Settings
 
-        public async Task<Setting> LoadSetting() => 
-            (await _manager.LoadData<Setting>("Settings"))
-            .FirstOrDefault();
+        public async Task<Setting> LoadSettings() =>
+            (await _manager.LoadData<Setting>("Settings")).FirstOrDefault();
 
-        public async Task SaveSetting(Setting setting)
+        public async Task SaveSettings(Setting setting)
         {
             await _manager.TruncateData("Settings");
             await _manager.AddData("Settings", setting);
         }
+
+        public async Task<IEnumerable<Theme>> LoadThemes() =>
+            from theme in await _manager.LoadData<ThemeDb>("Themes")
+            select new Theme
+            {
+                Id = theme.Id,
+                Name = theme.Name,
+                Background = GetColorFromString(theme.Background),
+                Foreground = GetColorFromString(theme.Foreground),
+                Hover = GetColorFromString(theme.Hover),
+                DarkIcons = theme.DarkIcons
+            };
+
+        public async Task SaveThemes(IEnumerable<Theme> themes)
+        {
+            await _manager.TruncateData("Themes");
+            await _manager.AddListOfData("Themes",
+                from theme in themes
+                select new ThemeDb
+                {
+                    Id = theme.Id,
+                    Name = theme.Name,
+                    Background = GetStringFromColor(theme.Background.Color),
+                    Foreground = GetStringFromColor(theme.Foreground.Color),
+                    Hover = GetStringFromColor(theme.Hover.Color),
+                    DarkIcons = theme.DarkIcons
+                });
+        }
+
+        public async Task SaveTheme(Theme theme) =>
+            await _manager.OverrideData("Themes",
+                new ThemeDb
+                {
+                    Id = theme.Id,
+                    Name = theme.Name,
+                    Background = GetStringFromColor(theme.Background.Color),
+                    Foreground = GetStringFromColor(theme.Foreground.Color),
+                    Hover = GetStringFromColor(theme.Hover.Color),
+                    DarkIcons = theme.DarkIcons
+                }, theme.Id);
+
+        public async Task AddTheme(Theme theme) =>
+            await _manager.AddData("Themes",
+                new ThemeDb
+                {
+                    Id = theme.Id,
+                    Name = theme.Name,
+                    Background = GetStringFromColor(theme.Background.Color),
+                    Foreground = GetStringFromColor(theme.Foreground.Color),
+                    Hover = GetStringFromColor(theme.Hover.Color),
+                    DarkIcons = theme.DarkIcons
+                });
 
         #endregion Settings
         #region Tasks
@@ -127,10 +178,10 @@ namespace destNotes.ViewModel
             await _manager.AddListOfData("TasksList", task.List, "TaskId", task.Id);
         }
 
-        public async Task DeleteTask(string id) => 
+        public async Task DeleteTask(string id) =>
             await _manager.DeleteData("Tasks", id);
 
-        public async Task DeleteTaskText(string id) => 
+        public async Task DeleteTaskText(string id) =>
             await _manager.DeleteData("TasksList", id);
 
         #endregion Tasks
@@ -141,7 +192,7 @@ namespace destNotes.ViewModel
             return new SolidColorBrush(Color.FromRgb(split[0], split[1], split[2]));
         }
 
-        private static string GetStringFromColor(Color color) => 
+        private static string GetStringFromColor(Color color) =>
             $"{color.R} {color.G} {color.B}";
     }
 }

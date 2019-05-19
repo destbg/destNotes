@@ -2,6 +2,6 @@
 {
     public class Setting
     {
-        public Theme Theme { get; set; }
+        public string Theme { get; set; }
     }
 }

@@ -3,11 +3,11 @@ using destNotes.View;
 using destNotes.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using NotifyIcon = System.Windows.Forms.NotifyIcon;
 
 namespace destNotes
 {
@@ -18,12 +18,10 @@ namespace destNotes
         public MainWindow()
         {
             InitializeComponent();
-
             _controller = new DbController();
-
             ShowNoteList();
 
-            var ni = new NotifyIcon
+            var ni = new System.Windows.Forms.NotifyIcon
             {
                 Icon = new System.Drawing.Icon("Assets/destlogo.ico"),
                 Visible = true,
@@ -75,25 +73,29 @@ namespace destNotes
 
             ni.MouseClick += Ni_MouseClick;
 
-
             var dirs = Application.Current.Resources.MergedDictionaries;
-            switch (_controller.LoadSetting().GetAwaiter().GetResult()?.Theme.ToString())
+            var setting = _controller.LoadSettings().GetAwaiter().GetResult();
+            if (setting == null) return;
+            var theme = new SettingsViewModel(_controller).Themes.FirstOrDefault(f => f.Id == setting.Theme);
+            if (theme == null) return;
+
+            dirs.RemoveAt(dirs.Count - 1);
+            dirs.RemoveAt(dirs.Count - 1);
+            dirs.Add(theme.DarkIcons
+                ? new ResourceDictionary
+                {
+                    Source = new Uri("/destNotes;component/View/Theme/DarkIcons.xaml", UriKind.Relative)
+                }
+                : new ResourceDictionary
+                {
+                    Source = new Uri("/destNotes;component/View/Theme/LightIcons.xaml", UriKind.Relative)
+                });
+            dirs.Add(new ResourceDictionary
             {
-                case "Light":
-                    dirs.RemoveAt(dirs.Count - 1);
-                    dirs.Add(new ResourceDictionary
-                    {
-                        Source = new Uri("/destNotes;component/View/Theme/LightTheme.xaml", UriKind.Relative)
-                    });
-                    break;
-                case "Dark":
-                    dirs.RemoveAt(dirs.Count - 1);
-                    dirs.Add(new ResourceDictionary
-                    {
-                        Source = new Uri("/destNotes;component/View/Theme/DarkTheme.xaml", UriKind.Relative)
-                    });
-                    break;
-            }
+                {"BackgroundColor", theme.Background},
+                {"ForegroundColor", theme.Foreground},
+                {"HoverColor", theme.Hover}
+            });
         }
 
         private void Ni_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)

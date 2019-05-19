@@ -1,42 +1,64 @@
 ﻿using destNotes.Model;
-using destNotes.ViewModel.Annotations;
 using destNotes.ViewModel.Interface;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Media;
 
 namespace destNotes.ViewModel
 {
-    public class SettingsViewModel : INotifyPropertyChanged
+    public class SettingsViewModel
     {
-        private Setting _setting;
-
-        public Setting Setting
-        {
-            get => _setting;
-            set
-            {
-                _setting = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<Theme> Themes { get; }
+        public Setting Setting { get; }
 
         private readonly ISettingsController _controller;
 
         public SettingsViewModel(ISettingsController controller)
         {
             _controller = controller;
-            _setting = _controller.LoadSetting().GetAwaiter().GetResult() ?? new Setting();
+            Setting = _controller.LoadSettings().GetAwaiter().GetResult() ?? new Setting();
+            Themes = new ObservableCollection<Theme>(_controller.LoadThemes().GetAwaiter().GetResult());
+            var hasDark = false;
+            var hasLight = false;
+            foreach (var theme in Themes)
+                switch (theme.Name)
+                {
+                    case "Dark":
+                        hasDark = true;
+                        break;
+                    case "Light":
+                        hasLight = true;
+                        break;
+                }
+
+            if (!hasDark)
+                Themes.Add(new Theme
+                {
+                    Id = Guid.NewGuid().ToString("N"),
+                    Name = "Dark",
+                    Hover = new SolidColorBrush(Color.FromRgb(76, 76, 76)),
+                    Background = new SolidColorBrush(Color.FromRgb(24, 26, 27)),
+                    Foreground = new SolidColorBrush(Color.FromRgb(232, 230, 227)),
+                    DarkIcons = true
+                });
+            if (!hasLight)
+                Themes.Add(new Theme
+                {
+                    Id = Guid.NewGuid().ToString("N"),
+                    Name = "Light",
+                    Hover = new SolidColorBrush(Color.FromRgb(76, 76, 76)),
+                    Background = new SolidColorBrush(Color.FromRgb(248, 248, 255)),
+                    Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                    DarkIcons = false
+                });
+            if (!hasLight || !hasDark)
+                SaveThemes();
         }
 
-        public void SaveSettings()
-        {
-            _controller.SaveSetting(Setting);
-        }
+        public async void SaveThemes() =>
+            await _controller.SaveThemes(Themes);
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public async void SaveSetting() => 
+            await _controller.SaveSettings(Setting);
     }
 }

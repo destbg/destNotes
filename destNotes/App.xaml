@@ -7,6 +7,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/destNotes;component/View/Theme/MainTheme.xaml"/>
                 <!--Make sure the theme is always the last item-->
+                <ResourceDictionary Source="/destNotes;component/View/Theme/DarkIcons.xaml"/>
                 <ResourceDictionary Source="/destNotes;component/View/Theme/DarkTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

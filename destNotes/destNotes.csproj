@@ -99,6 +99,9 @@
     <Compile Include="View\TaskWindow.xaml.cs">
       <DependentUpon>TaskWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ThemeWindow.xaml.cs">
+      <DependentUpon>ThemeWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -135,9 +138,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ThemeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Theme\DarkIcons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Theme\DarkTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Theme\LightIcons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Theme\LightTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -184,6 +199,10 @@
     <Resource Include="Assets\view-list-dark.png" />
     <Resource Include="Assets\arrow-left-dark.png" />
     <Resource Include="Assets\calendar-text-outline-dark.png" />
+    <Resource Include="Assets\content-save-dark.png" />
+    <Resource Include="Assets\content-save.png" />
+    <Resource Include="Assets\pencil-dark.png" />
+    <Resource Include="Assets\pencil.png" />
     <Content Include="DbContext.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

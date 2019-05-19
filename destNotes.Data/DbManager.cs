@@ -37,6 +37,12 @@ namespace destNotes.Data
             await _connection.ExecuteAsync(GetSqlFromObject(name, obj), objects);
         }
 
+        public async Task AddListOfData<T>(string name, IEnumerable<T> objects)
+        {
+            if (!(objects.FirstOrDefault() is T obj)) return;
+            await _connection.ExecuteAsync(GetSqlFromObject(name, obj), objects);
+        }
+
         public async Task OverrideData<T>(string name, T obj, string id)
         {
             var fields = obj.GetType().GetProperties().Select(s => $"{s.Name} = @{s.Name}");

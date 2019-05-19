@@ -3,18 +3,4 @@
     <SolidColorBrush x:Key="BackgroundColor" Color="GhostWhite"/>
     <SolidColorBrush x:Key="ForegroundColor" Color="Black"/>
     <SolidColorBrush x:Key="HoverColor" Color="#4c4c4c"/>
-    <BitmapImage x:Key="Add" UriSource="../../Assets/plus-dark.png" />
-    <BitmapImage x:Key="Close" UriSource="../../Assets/window-close-dark.png" />
-    <BitmapImage x:Key="Settings" UriSource="../../Assets/settings-outline-dark.png" />
-    <BitmapImage x:Key="TaskList" UriSource="../../Assets/application-dark.png" />
-    <BitmapImage x:Key="List" UriSource="../../Assets/view-list-dark.png" />
-    <BitmapImage x:Key="Trash" UriSource="../../Assets/trash-can-outline-dark.png" />
-    <BitmapImage x:Key="Bold" UriSource="../../Assets/format-bold-dark.png" />
-    <BitmapImage x:Key="Italic" UriSource="../../Assets/format-italic-dark.png" />
-    <BitmapImage x:Key="Underline" UriSource="../../Assets/format-underline-dark.png" />
-    <BitmapImage x:Key="Strikethrough" UriSource="../../Assets/format-strikethrough-dark.png" />
-    <BitmapImage x:Key="Bulleted" UriSource="../../Assets/format-list-bulleted-dark.png" />
-    <BitmapImage x:Key="Left" UriSource="../../Assets/arrow-left-dark.png" />
-    <BitmapImage x:Key="NoteList" UriSource="../../Assets/calendar-text-outline-dark.png" />
-    <BitmapImage x:Key="Menu" UriSource="../../Assets/dots-horizontal-dark.png" />
 </ResourceDictionary>

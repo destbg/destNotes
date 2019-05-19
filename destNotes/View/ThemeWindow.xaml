@@ -1,0 +1,45 @@
+﻿<Window x:Class="destNotes.View.ThemeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d" WindowStyle="None" WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundColor}" ResizeMode="NoResize"
+        Title="ThemeWindow" Height="293" Width="700">
+    <StackPanel>
+        <Grid>
+            <Rectangle Fill="Black" Opacity="0" MouseLeftButtonDown="MoveWindow"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Name: "/>
+                <TextBox Text="{Binding Theme.Name}" MaxLength="20" Name="NameBox" Width="200" BorderBrush="{DynamicResource HoverColor}"/>
+            </StackPanel>
+            <Button Style="{StaticResource FlatButton}" HorizontalAlignment="Right" Height="25" Width="25" Click="SaveTheme">
+                <Image Source="{DynamicResource Save}" />
+            </Button>
+        </Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <TextBlock Text="Foreground Color" FontSize="18" HorizontalAlignment="Center"/>
+                <xctk:ColorCanvas Background="{DynamicResource BackgroundColor}"
+                                  Foreground="{DynamicResource ForegroundColor}"
+                                  UsingAlphaChannel="False" Name="ForegroundColor"
+                                  SelectedColor="{Binding Theme.Foreground.Color}"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Background Color" FontSize="18" HorizontalAlignment="Center"/>
+                <xctk:ColorCanvas Background="{DynamicResource BackgroundColor}"
+                                  Foreground="{DynamicResource ForegroundColor}"
+                                  UsingAlphaChannel="False" Name="BackgroundColor"
+                                  SelectedColor="{Binding Theme.Background.Color}"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Hover Color" FontSize="18" HorizontalAlignment="Center"/>
+                <xctk:ColorCanvas Background="{DynamicResource BackgroundColor}"
+                                  Foreground="{DynamicResource ForegroundColor}"
+                                  UsingAlphaChannel="False" Name="HoverColor"
+                                  SelectedColor="{Binding Theme.Hover.Color}"/>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</Window>

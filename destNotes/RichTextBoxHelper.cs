@@ -7,7 +7,7 @@ namespace destNotes
 {
     public class RichTextBoxHelper : DependencyObject
     {
-        public static void SetDocumentXaml(DependencyObject obj, string value) => 
+        public static void SetDocumentXaml(DependencyObject obj, string value) =>
             obj.SetValue(DocumentXamlProperty, value);
 
         public static readonly DependencyProperty DocumentXamlProperty =
