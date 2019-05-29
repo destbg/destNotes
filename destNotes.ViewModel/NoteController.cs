@@ -28,8 +28,8 @@ namespace destNotes.ViewModel
         public bool ValidateKeyDownEvent(string key, KeyEventArgs e)
         {
             if (char.TryParse(key, out var c) && char.IsLetterOrDigit(c) &&
-                (Keyboard.GetKeyStates(Key.LeftCtrl) | Keyboard.GetKeyStates(Key.RightCtrl)
-                 & KeyStates.Down) != KeyStates.Down) return false;
+                !(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                return false;
 
             if (!_isBullets || e.Key != Key.Enter) return true;
 
@@ -59,9 +59,8 @@ namespace destNotes.ViewModel
             else if (_isStrike)
                 run.TextDecorations = TextDecorations.Strikethrough;
 
-            var shiftToggle = (Keyboard.GetKeyStates(Key.LeftShift) |
-                               Keyboard.GetKeyStates(Key.RightShift) & KeyStates.Toggled) ==
-                              KeyStates.Toggled;
+            var shiftToggle = Keyboard.IsKeyDown(Key.LeftShift) ||
+                              Keyboard.IsKeyDown(Key.RightShift);
 
             run.Text = Keyboard.GetKeyStates(Key.CapsLock) == KeyStates.None
                 ? shiftToggle ? key : key.ToLower()

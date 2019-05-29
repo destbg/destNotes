@@ -64,7 +64,8 @@ namespace destNotes.View
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Something went wrong. \nError message: " + ex.Message);
+                if (ex.HResult == -2147024809) return;
+                MessageBox.Show("Something went wrong. \nError message: " + ex.Message + ex.HResult);
             }
         }
 
