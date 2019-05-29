@@ -26,8 +26,9 @@
         <ListBox DockPanel.Dock="Bottom" ItemsSource="{Binding Tasks}" Name="TaskListBox">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Background="{Binding Color}" Height="20" Margin="5">
-                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center"/>
+                    <Grid Background="{Binding Color}" Margin="5">
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" 
+                            Loaded="FrameworkElement_OnLoaded" Padding="2" Margin="3"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
