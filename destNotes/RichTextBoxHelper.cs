@@ -17,6 +17,7 @@ namespace destNotes
                 typeof(RichTextBoxHelper),
                 new FrameworkPropertyMetadata
                 {
+                    BindsTwoWayByDefault = true,
                     PropertyChangedCallback = (obj, e) =>
                     {
                         var richTextBox = (RichTextBox)obj;

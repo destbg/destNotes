@@ -27,11 +27,10 @@
         <ListBox DockPanel.Dock="Bottom" ItemsSource="{Binding Notes}" Name="NoteListBox">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Background="{DynamicResource HoverColor}">
+                    <StackPanel Background="#0f0f0f">
                         <Rectangle Fill="{Binding Color}" Height="5"/>
-                        <TextBlock Foreground="{Binding Color}" Margin="0 0 3 0" Padding="2"
-                                   Text="{Binding Edited}" HorizontalAlignment="Right"
-                                   Loaded="FrameworkElement_OnLoaded"/>
+                        <TextBlock Foreground="{Binding Color}" Margin="0 0 5 0"
+                                   Text="{Binding Edited}" HorizontalAlignment="Right"/>
                         <RichTextBox Name="MultiText" SpellCheck.IsEnabled="True" Width="275"
                                      VerticalAlignment="Stretch" MaxHeight="100"
                                      HorizontalAlignment="Stretch" AcceptsReturn="True"
