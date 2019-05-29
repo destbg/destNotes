@@ -47,7 +47,7 @@ namespace destNotes.ViewModel
                     Id = Guid.NewGuid().ToString("N"),
                     Name = "Light",
                     Hover = new SolidColorBrush(Color.FromRgb(76, 76, 76)),
-                    Background = new SolidColorBrush(Color.FromRgb(248, 248, 255)),
+                    Background = new SolidColorBrush(Color.FromRgb(244, 244, 244)),
                     Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
                     DarkIcons = false
                 });

@@ -13,6 +13,8 @@ namespace destNotes.View
 {
     public partial class NoteWindow : Window
     {
+        public string Id { get; }
+
         private readonly NoteViewModel _noteViewModel;
         private readonly NoteController _note;
         private bool _isFocused;
@@ -20,6 +22,7 @@ namespace destNotes.View
         public NoteWindow(INoteController controller, string id)
         {
             InitializeComponent();
+            Id = id;
             _note = new NoteController(id, MultiText);
             _noteViewModel = new NoteViewModel(controller, id);
             DataContext = _noteViewModel;

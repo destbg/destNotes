@@ -174,6 +174,12 @@ namespace destNotes
         {
             var listBox = sender as ListBox;
             if (!(listBox?.SelectedItem is TaskModel taskModel)) return;
+            foreach (var window in Application.Current.Windows)
+            {
+                if (!(window is TaskWindow taskWindow) || taskWindow.Id != taskModel.Id) continue;
+                taskWindow.Focus();
+                return;
+            }
             var task = new TaskWindow(_controller, taskModel.Id);
             task.DeleteTask.Click += DeleteTask;
             task.ShowTaskList.Click += ShowTaskList;
@@ -186,6 +192,12 @@ namespace destNotes
         {
             var listBox = sender as ListBox;
             if (!(listBox?.SelectedItem is Note noteModel)) return;
+            foreach (var window in Application.Current.Windows)
+            {
+                if (!(window is NoteWindow noteWindow) || noteWindow.Id != noteModel.Id) continue;
+                noteWindow.Focus();
+                return;
+            }
             var note = new NoteWindow(_controller, noteModel.Id);
             note.ShowNoteList.Click += ShowNoteList;
             note.DeleteNote.Click += DeleteNote;

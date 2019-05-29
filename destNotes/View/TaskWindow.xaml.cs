@@ -13,6 +13,8 @@ namespace destNotes.View
 {
     public partial class TaskWindow : Window
     {
+        public string Id { get; set; }
+
         private readonly TaskViewModel _taskViewModel;
         private bool _startMove;
         private TaskText _taskText;
@@ -21,6 +23,7 @@ namespace destNotes.View
         public TaskWindow(ITaskController controller, string id)
         {
             InitializeComponent();
+            Id = id;
             _taskViewModel = new TaskViewModel(controller, id);
             DataContext = _taskViewModel;
             SetLuminance(_taskViewModel.Task.Color.Color);
